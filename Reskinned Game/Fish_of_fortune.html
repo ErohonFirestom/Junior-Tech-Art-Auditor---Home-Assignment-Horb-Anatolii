@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lane Runner Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #332e2e;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            position: relative;
+        }
+
+        canvas {
+            border: 2px solid #333;
+            background-color: #ffffff;
+        }
+
+        #game-stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #game-over, #game-win {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+        <div id="game-stats">Coins: 0</div>
+        <div id="game-over">
+            Game Over!
+            <br>
+            <button id="restart-button">Play Again</button>
+        </div>
+        <div id="game-win">
+            You Win!
+            <br>
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js" defer></script>
+</body>
+</html>
