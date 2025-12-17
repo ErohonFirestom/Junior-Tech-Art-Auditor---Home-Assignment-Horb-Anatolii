@@ -98,6 +98,7 @@ class Game {
         this.shakeDuration = 0;
         this.shakeMagnitude = 0;
         this.flashDuration = 0;
+        this.gameLoopId = null;
 
         this.OBJECT_TYPES = {
             COIN: { value: 1, image: 'coin', color: 'yellow' },
@@ -145,13 +146,15 @@ class Game {
         this.fallingObjects = [];
         this.particles = [];
         this.player = new Player(this.laneCount, this.playerSize, this.playerY);
-        this.gameRunning = true;
+        
         this.backgroundY = 0;
         this.shakeDuration = 0;
         this.flashDuration = 0;
         this.gameOverScreen.style.display = 'none';
         this.gameWinScreen.style.display = 'none';
         this.updateStats();
+        this.gameRunning = true;
+        this.gameLoop();
     }
 
     movePlayer(direction) {
@@ -335,10 +338,12 @@ class Game {
     }
 
     gameLoop() {
+        if (!this.gameRunning) return;
+
         try {
             this.update();
             this.draw();
-            requestAnimationFrame(() => this.gameLoop());
+            this.gameLoopId = requestAnimationFrame(() => this.gameLoop());
         } catch (error) {
             console.error("Error in game loop:", error);
             this.gameRunning = false;
@@ -356,12 +361,14 @@ class Game {
 
     gameOver() {
         this.gameRunning = false;
+        cancelAnimationFrame(this.gameLoopId);
         this.assets.gameOverSound.play();
         this.gameOverScreen.style.display = 'block';
     }
 
     gameWin() {
         this.gameRunning = false;
+        cancelAnimationFrame(this.gameLoopId);
         this.assets.gameWinSound.play();
         this.gameWinScreen.style.display = 'block';
     }
@@ -369,7 +376,6 @@ class Game {
     start() {
         this.loadAssets().then(() => {
             this.init();
-            this.gameLoop();
         }).catch(error => {
             console.error("Failed to load assets:", error);
             this.ctx.fillStyle = "red";
@@ -392,5 +398,11 @@ document.addEventListener('keydown', (e) => {
 
 game.restartButton.addEventListener('click', () => game.init());
 game.playAgainButton.addEventListener('click', () => game.init());
+
+const leftButton = document.getElementById('left-button');
+const rightButton = document.getElementById('right-button');
+
+leftButton.addEventListener('click', () => game.movePlayer('left'));
+rightButton.addEventListener('click', () => game.movePlayer('right'));
 
 game.start();

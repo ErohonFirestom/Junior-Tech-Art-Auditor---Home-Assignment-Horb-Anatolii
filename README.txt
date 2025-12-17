@@ -1,3 +1,6 @@
+TO LAUNCH GAME from mobile go to this link https://fish-of-fortune.vercel.app/
+
+
 An explanation of creative and technical approach
 
 I inspire old 16bit games like mario, packman etc. Raw game remember me gameplay of guitar hero. So i used old game sounds. For visual i want 
@@ -20,8 +23,8 @@ Record every step by documentation task and time record
 14. Integrate sounds into the game: 1 min
 15. Refactor code with Gemini: 3 min
 16. Final check (everything works great): 10 seconds
-
-Total time spent: 2 hours 38 minutes 10 seconds
+17. Server deploy for mobile gaming 1 hour
+Total time spent: 3 hours 38 minutes 10 seconds
 
 Prompts used during development:
 "Enable support for image assets in this game."
