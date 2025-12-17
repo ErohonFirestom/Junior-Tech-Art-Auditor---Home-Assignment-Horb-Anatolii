@@ -81,7 +81,11 @@ class Game {
         this.gameWinScreen = document.getElementById('game-win');
         this.restartButton = document.getElementById('restart-button');
         this.playAgainButton = document.getElementById('play-again-button');
+        this.soundChoiceScreen = document.getElementById('sound-choice-screen');
+        this.soundOnButton = document.getElementById('sound-on-button');
+        this.soundOffButton = document.getElementById('sound-off-button');
 
+        this.isMuted = true;
         this.laneCount = 5;
         this.laneWidth = this.canvas.width / this.laneCount;
         this.playerSize = 80;
@@ -237,7 +241,7 @@ class Game {
                         this.shakeDuration = 20;
                         this.shakeMagnitude = 10;
                         this.flashDuration = 20;
-                        this.assets.obstacleSound.play();
+                        if (!this.isMuted) this.assets.obstacleSound.play();
                         this.player.isInvulnerable = true;
                         this.player.invulnerabilityDuration = 120;
                         if (this.player.lives <= 0) {
@@ -248,7 +252,7 @@ class Game {
                     this.coins += obj.type.value;
                     this.updateStats();
                     this.createParticles(objX, obj.y, obj.type.color, 20);
-                    this.assets.coinSound.play();
+                    if (!this.isMuted) this.assets.coinSound.play();
                     if (this.coins >= 100) {
                         this.gameWin();
                     }
@@ -362,18 +366,18 @@ class Game {
     gameOver() {
         this.gameRunning = false;
         cancelAnimationFrame(this.gameLoopId);
-        this.assets.gameOverSound.play();
+        if (!this.isMuted) this.assets.gameOverSound.play();
         this.gameOverScreen.style.display = 'block';
     }
 
     gameWin() {
         this.gameRunning = false;
         cancelAnimationFrame(this.gameLoopId);
-        this.assets.gameWinSound.play();
+        if (!this.isMuted) this.assets.gameWinSound.play();
         this.gameWinScreen.style.display = 'block';
     }
 
-    start() {
+    _startGame() {
         this.loadAssets().then(() => {
             this.init();
         }).catch(error => {
@@ -381,6 +385,22 @@ class Game {
             this.ctx.fillStyle = "red";
             this.ctx.font = "20px Arial";
             this.ctx.fillText("Failed to load game assets. Please refresh.", 50, 300);
+        });
+    }
+
+    start() {
+        this.soundChoiceScreen.style.display = 'flex';
+
+        this.soundOnButton.addEventListener('click', () => {
+            this.isMuted = false;
+            this.soundChoiceScreen.style.display = 'none';
+            this._startGame();
+        });
+
+        this.soundOffButton.addEventListener('click', () => {
+            this.isMuted = true;
+            this.soundChoiceScreen.style.display = 'none';
+            this._startGame();
         });
     }
 }
